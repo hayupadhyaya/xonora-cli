@@ -53,15 +53,17 @@ xattr -d com.apple.quarantine $(which xonora-cli)
 
 Or approve in **System Settings → Privacy & Security → Open Anyway**.
 
-### No server auto-discovered
+### Connecting to a server for the first time
 
-Pass the server URL explicitly:
+Pass the server URL and credentials explicitly. These are saved to `~/.xonora-cli/config.json` after a successful connection:
 
 ```sh
-xonora-cli --server ws://<MA-IP>:8095
+xonora-cli --server ws://<MA-IP>:8095 --user <username> --pass <password>
+# or with a token
+xonora-cli --server ws://<MA-IP>:8095 --token <token>
 ```
 
-Auto-discovery relies on mDNS (`_music-assistant._tcp`). Some networks block multicast.
+Subsequent runs can use `xonora-cli` alone to reuse saved credentials.
 
 ### "Sendspin connection failed"
 

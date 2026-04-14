@@ -92,10 +92,20 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/xonora-cli
 
 ## Quick start
 
+First run (credentials are saved to `~/.xonora-cli/config.json`):
+
 ```sh
-xonora-cli                              # auto-discover MA server on your LAN
-xonora-cli --server 192.168.1.50:8095   # explicit server
-xonora-cli --name "Kitchen Mac"         # set CLI's display name in MA
+xonora-cli --server ws://192.168.1.50:8095 --user USERNAME --pass PASSWORD
+# or with a token
+xonora-cli --server ws://192.168.1.50:8095 --token YOUR_TOKEN
+```
+
+Subsequent runs:
+
+```sh
+xonora-cli                              # reuse saved server + credentials
+xonora-cli --name "Kitchen Mac"         # override CLI's display name in MA
+xonora-cli --audio                      # enable local audio on launch
 xonora-cli --help                       # all flags
 ```
 

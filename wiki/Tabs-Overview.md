@@ -17,7 +17,7 @@ Each check shows `+` (pass), `-` (fail), `!` (degraded) and a live status messag
 
 ## 2. Players
 
-Lists every MA player on the server. Select one with `j` / `k` or arrows and press `Enter` to route playback to it. Shows track, progress, time, and volume per player.
+Lists every MA player on the server. Select one with `j` / `k` or arrows and press `Enter` to route playback to it. Shows player name, current track, and volume per player.
 
 ## 3. Queue
 

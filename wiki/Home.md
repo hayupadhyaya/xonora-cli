@@ -16,9 +16,12 @@ Welcome to the `xonora-cli` documentation.
 ## Quick reference
 
 ```sh
-xonora-cli                                   # auto-discover MA server
-xonora-cli --server 192.168.1.50:8095        # explicit server
-xonora-cli --name "Kitchen Mac"              # set CLI's display name in MA
+# First run — pass server + credentials (saved to ~/.xonora-cli/config.json)
+xonora-cli --server ws://192.168.1.50:8095 --user USERNAME --pass PASSWORD
+
+# Subsequent runs — reuse saved config
+xonora-cli
+xonora-cli --name "Kitchen Mac"              # override display name
 xonora-cli --audio                           # enable local audio on launch
 xonora-cli --help                            # show all flags
 ```

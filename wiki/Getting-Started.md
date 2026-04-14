@@ -43,23 +43,30 @@ The binary is unsigned. On first launch macOS may block it. Either:
 
 ## First run
 
+Initial setup requires passing your server URL and credentials:
+
+```sh
+xonora-cli --server ws://192.168.1.50:8095 --user myuser --pass mypass
+```
+
+Or with a token:
+
+```sh
+xonora-cli --server ws://192.168.1.50:8095 --token YOUR_TOKEN
+```
+
+On first successful connection, the settings are saved to `~/.xonora-cli/config.json`. Subsequent runs can simply be:
+
 ```sh
 xonora-cli
 ```
 
 On startup xonora-cli will:
 
-1. Scan the local network for a Music Assistant server (mDNS `_music-assistant._tcp`)
-2. Connect via WebSocket and authenticate
-3. Register itself as an MA player named **"Xonora CLI"** (configurable with `--name`)
-4. Connect to Sendspin, exchange hello, run clock sync
-5. Open the TUI on the Dashboard tab
-
-If no server is found, pass one explicitly:
-
-```sh
-xonora-cli --server 192.168.1.50:8095
-```
+1. Connect via WebSocket and authenticate against the saved MA server
+2. Register itself as an MA player named **"Xonora CLI"** (configurable with `--name`)
+3. Connect to Sendspin, exchange hello, and run clock synchronization
+4. Open the TUI on the Dashboard tab
 
 ## What to try first
 
