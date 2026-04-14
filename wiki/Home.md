@@ -18,8 +18,8 @@ Welcome to the `xonora-cli` documentation.
 ```sh
 xonora-cli                                   # auto-discover MA server
 xonora-cli --server 192.168.1.50:8095        # explicit server
-xonora-cli --player "Living Room"            # select a specific MA player
-xonora-cli --no-audio                        # run as remote controller only
+xonora-cli --name "Kitchen Mac"              # set CLI's display name in MA
+xonora-cli --audio                           # enable local audio on launch
 xonora-cli --help                            # show all flags
 ```
 

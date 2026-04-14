@@ -95,7 +95,7 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/xonora-cli
 ```sh
 xonora-cli                              # auto-discover MA server on your LAN
 xonora-cli --server 192.168.1.50:8095   # explicit server
-xonora-cli --player "Living Room"       # pick a specific MA player
+xonora-cli --name "Kitchen Mac"         # set CLI's display name in MA
 xonora-cli --help                       # all flags
 ```
 
