@@ -45,4 +45,4 @@ xonora-cli --webrtc XXXXXXXX-XXXXX-XXXXX-XXXXXXXX
 
 ## Configuration persistence
 
-Connection settings are saved to `~/.config/xonora-cli/` on first successful connection. Running `xonora-cli` with no arguments reuses the saved direct-mode server. To switch to remote mode, pass `--webrtc` with a new Remote ID (or `--webrtc` alone to reuse the saved ID).
+Connection settings are saved to `~/.xonora-cli/config.json` on first successful connection. Running `xonora-cli` with no arguments reuses the saved direct-mode server. To switch to remote mode, pass `--webrtc` with a new Remote ID (or `--webrtc` alone to reuse the saved ID).

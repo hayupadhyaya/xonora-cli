@@ -12,35 +12,27 @@
 | `Ctrl+R` | Reconnect (re-runs WebRTC signalling in remote mode) |
 | `q` | Quit |
 
-## Navigation (list / table tabs)
+## List and table tabs (Players, Queue, Library, Search, Console, etc.)
 
 | Key | Action |
 |-----|--------|
 | `j` / `Down` | Move selection down |
 | `k` / `Up` | Move selection up |
-| `g` | Jump to top |
-| `G` | Jump to bottom |
-| `Page Down` | Scroll one page down |
-| `Page Up` | Scroll one page up |
 | `Enter` | Activate / select the highlighted row |
-| `Esc` | Cancel / close modal |
+| `Esc` | Cancel / close modal / exit input mode |
 
-## Search
-
-| Key | Action |
-|-----|--------|
-| `/` | Open search prompt |
-| `Enter` | Run search |
-| `Esc` | Close search |
-
-## Console
+## Console tab only
 
 | Key | Action |
 |-----|--------|
-| `i` | Enter input mode |
-| `Enter` | Submit command |
-| `Esc` | Exit input mode |
-| `Up` / `Down` | Scroll command history |
+| `/` | Filter command registry |
+| `Page Up` / `Page Down` | Scroll response pane |
+| `Ctrl+B` | Browse command registry |
+| `Ctrl+L` | Clear response pane |
+
+## Search tab
+
+The search input is always visible at the top of the tab — just type your query and press `Enter`. Use `j` / `k` or arrow keys to move between results.
 
 ## Status-bar hints
 

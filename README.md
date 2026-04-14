@@ -41,9 +41,9 @@ No Electron, no web view, no background daemon — just a ~3 MB binary.
 - **9-tab TUI** — Dashboard, Players, Queue, Library, Search, Sendspin, Party, Console, Logs
 - **Native audio** — FLAC, PCM, Opus decoders feeding macOS AudioQueue at the stream's native sample rate
 - **Gapless playback** with 5s pre-decode buffer and NTP-style clock sync
-- **Built-In Test (BIT) panel** — live health checks of every subsystem
+- **Built-In Test (BIT) panel** — live health checks across CORE, NET, AUDIO, DATA subsystems
 - **Multi-player control** — drive any MA player (phone, web, Sonos, etc.) from your terminal
-- **Party mode** — take over remote players for a synchronized listening session
+- **Party mode** — host or join a shared listening session with other Xonora clients
 - **Remote mode (beta)** — WebRTC peer connection + DataChannels for access outside your LAN *(arm64 build only in v0.1)*
 
 See the [Wiki](https://github.com/hayupadhyaya/xonora-cli/wiki) for full feature docs and keybindings.
