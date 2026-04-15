@@ -39,9 +39,9 @@ No Electron, no web view, no background daemon — just a ~5 MB binary.
 ## Supported Platforms          
 
 <!-- BEGIN:PLATFORMS -->
-- **macOS** arm64, x86_64 — macOS 12 (Monterey) or newer (universal binary)
-- **Linux** x86_64, arm64 — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+ (glibc 2.28+); only `libasound2` required
-- **Windows** x86_64 — Windows 10/11 via WSL2 (runs the Linux x86_64 binary; native Windows build planned for a future release)
+- **macOS** arm64, x86_64 — macOS 12 (Monterey) or newer (universal binary, full local audio)
+- **Linux** x86_64, arm64 — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+ (glibc 2.28+); full local audio via ALSA
+- **Windows** x86_64 — Windows 10/11 via WSL2 (**remote control only** — no local audio playback; native Windows build planned for a future release)
 <!-- END:PLATFORMS -->                                                                                                              
 
 ## Features
@@ -58,10 +58,10 @@ See the [Wiki](https://github.com/hayupadhyaya/xonora-cli/wiki) for full feature
 
 ## Requirements
 
-- **macOS 12 (Monterey) or later**, **Linux** (glibc 2.28+ — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+), or **Windows 10/11 via WSL2**
+- **macOS 12 (Monterey) or later**, **Linux** (glibc 2.28+ — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+), or **Windows 10/11 via WSL2** (remote control only — see Known issues)
 - A reachable **Music Assistant** server (schema 28+) with the **Sendspin** provider enabled
 - Terminal with true-color support (Terminal.app, iTerm2, Alacritty, kitty, WezTerm, Windows Terminal all work)
-- Linux only: `libasound2` runtime (pre-installed on most desktop distros)
+- Linux: ALSA runtime — `libasound2t64` (Ubuntu 24.04+), `libasound2` (Ubuntu 22.04 / Debian 12), `alsa-lib` (Fedora / Arch). Pre-installed on most desktop distros.
 
 ## Installation           
                                                                                                                                       
@@ -82,6 +82,21 @@ tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.2.0-macos-universal/xonora-c
 
 ### Linux
 
+Install the ALSA runtime (one-time). **Note:** Ubuntu renamed the package from `libasound2` to `libasound2t64` starting in 24.04 (part of the `time_t` 64-bit transition) — on 24.04+ the old name has no install candidate, use `libasound2t64`:
+
+```bash
+# Ubuntu 24.04+ / Debian trixie (package renamed)
+sudo apt install -y libasound2t64
+# Ubuntu 22.04 / Debian 12 (old name)
+sudo apt install -y libasound2
+# Fedora / RHEL
+sudo dnf install -y alsa-lib
+# Arch
+sudo pacman -S --needed alsa-lib
+```
+
+Then download the binary:
+
 ```bash
 ARCH=$(uname -m); [ "$ARCH" = "aarch64" ] && ARCH=arm64
 curl -L -o xonora-cli.tar.gz \
@@ -89,9 +104,13 @@ curl -L -o xonora-cli.tar.gz \
 tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.2.0-linux-${ARCH}/xonora-cli /usr/local/bin/
 ```
 
-### Windows (via WSL2)
+### Windows (via WSL2 — remote control only)
 
-Native Windows builds are not yet available. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) with an Ubuntu distribution, then follow the **Linux x86_64** instructions above inside your WSL2 shell. Full functionality is supported.
+Native Windows builds are not yet available. WSL2 can run `xonora-cli` as a **remote controller** for your Music Assistant server (browse library, control queue, drive other MA players like Sonos / phone / web), but **local audio playback is not supported** inside WSL2 — WSL2 does not expose an ALSA device to Linux binaries.
+
+Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) with Ubuntu, then follow the **Linux x86_64** instructions above. Do **not** press `A` / pass `--audio`; use the TUI to control other MA players instead.
+
+Local audio on Windows will be available once the native Windows build ships.
 <!-- END:INSTALL -->  
 
 ## Downloads                           
@@ -111,7 +130,7 @@ Windows users: run the Linux x86_64 binary inside WSL2 — see the Installation 
 
 ### Roadmap
 
-- **Native Windows build** — deferred; currently via WSL2. See roadmap on the Discord.
+- **Native Windows build** — deferred. WSL2 works today for remote control; native build will add local audio playback (WASAPI). See roadmap on the Discord.
 - **Homebrew tap** — coming soon.
 
 ## Quick start
@@ -150,7 +169,7 @@ Full keybinding reference: [Wiki → Keybindings](https://github.com/hayupadhyay
 - **PCM & Opus silent** — only FLAC currently produces audio. PCM fallback (bit_depth=0→16) landed; Opus decoder configure may fail on some servers. Use FLAC output format in MA until fixed.
 - **Remote (WebRTC) mode disabled** — not shipped in v0.2 binaries. LAN-only access for now.
 - **Dashboard queue/playback panel** — some MA event types update the Logs tab but do not refresh the Dashboard summary until a full event cycle passes.
-- **Native Windows** — deferred; Windows users run the Linux x86_64 binary inside WSL2 (full functionality).
+- **WSL2 has no local audio** — WSL2 does not expose an ALSA device to Linux binaries, so on Windows `xonora-cli` runs as a **remote controller only**: browse library, control the queue, drive Sonos / phone / web / any other MA player. Local audio playback inside WSL2 is not fixable — it requires the **native Windows build** (WASAPI), which is planned for a future release.
 
 See [Wiki → Troubleshooting](https://github.com/hayupadhyaya/xonora-cli/wiki/Troubleshooting) for workarounds.
 
