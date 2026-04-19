@@ -39,7 +39,7 @@ No Electron, no web view, no background daemon — just a ~5 MB binary.
 ## Supported Platforms          
 
 <!-- BEGIN:PLATFORMS -->
-- **macOS** arm64 (Apple Silicon) — macOS 12 (Monterey) or newer; full local audio via CoreAudio. Intel Macs are not shipped as a binary for v0.3.10 — build from source.
+- **macOS** arm64 (Apple Silicon) — macOS 12 (Monterey) or newer; full local audio via CoreAudio. Intel Macs are not supported in v0.3.10.
 - **Linux** x86_64, arm64 — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+ (glibc 2.28+); full local audio via ALSA
 - **Windows** x86_64 — Windows 10 or newer; full local audio via WASAPI (native build). WSL2 is also supported as a remote-control-only fallback.
 <!-- END:PLATFORMS -->                                                                                                              
@@ -58,7 +58,7 @@ See the [Wiki](https://github.com/hayupadhyaya/xonora-cli/wiki) for full feature
 
 ## Requirements
 
-- **macOS 12 (Monterey) or later** (Apple Silicon; Intel: build from source), **Linux** (glibc 2.28+ — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+), or **Windows 10 or newer** (x86_64, native)
+- **macOS 12 (Monterey) or later** (Apple Silicon only — Intel macOS not supported in v0.3.10), **Linux** (glibc 2.28+ — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+), or **Windows 10 or newer** (x86_64, native)
 - A reachable **Music Assistant** server (schema 28+) with the **Sendspin** provider enabled
 - Terminal with true-color support (Terminal.app, iTerm2, Alacritty, kitty, WezTerm, Windows Terminal all work)
 - Linux: ALSA runtime — `libasound2t64` (Ubuntu 24.04+), `libasound2` (Ubuntu 22.04 / Debian 12), `alsa-lib` (Fedora / Arch). Pre-installed on most desktop distros.
@@ -82,7 +82,7 @@ curl -L -o xonora-cli.tar.gz \
 tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.3.10-macos-arm64/xonora-cli /usr/local/bin/
 ```
 
-Intel Macs: not shipped as a binary for v0.3.10 — build from source.
+Intel Macs: not supported in v0.3.10 — Apple Silicon only.
 
 ### Linux
 

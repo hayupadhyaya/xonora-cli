@@ -20,7 +20,7 @@ Latest release: **v0.3.10** — [release notes](https://github.com/hayupadhyaya/
 brew install hayupadhyaya/xonora/xonora-cli
 ```
 
-The tap ships bottles for macOS arm64 (Apple Silicon), Linux x86_64, and Linux arm64. Intel macOS users: build from source.
+The tap ships bottles for macOS arm64 (Apple Silicon), Linux x86_64, and Linux arm64. Intel macOS users: not supported in v0.3.10 (Apple Silicon only).
 
 ## Checksums
 

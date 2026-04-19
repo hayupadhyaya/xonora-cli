@@ -16,7 +16,7 @@ curl -L -o xonora-cli.tar.gz \
 tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.3.10-macos-arm64/xonora-cli /usr/local/bin/
 ```
 
-Intel Macs: not shipped as a binary for v0.3.10 — build from source.
+Intel Macs: not supported in v0.3.10 — Apple Silicon only.
 
 ### Linux
 

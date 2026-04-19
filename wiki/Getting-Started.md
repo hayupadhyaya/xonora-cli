@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- macOS 12 (Monterey) or later (Apple Silicon — Intel: build from source), Linux (glibc 2.28+), or Windows 10+ (see [Supported Platforms](Supported-Platforms) for full matrix)
+- macOS 12 (Monterey) or later (Apple Silicon only — Intel macOS not supported), Linux (glibc 2.28+), or Windows 10+ (see [Supported Platforms](Supported-Platforms) for full matrix)
 - A Music Assistant server running on your network (schema 28 or later)
 - The **Sendspin** player provider enabled on the MA server
 - A terminal with true-color support (Terminal.app, iTerm2, Alacritty, kitty, WezTerm, Windows Terminal)

@@ -1,6 +1,6 @@
 # Supported Platforms
 
-- **macOS** arm64 (Apple Silicon) — macOS 12 (Monterey) or newer; full local audio via CoreAudio. Intel Macs are not shipped as a binary for v0.3.10 — build from source.
+- **macOS** arm64 (Apple Silicon) — macOS 12 (Monterey) or newer; full local audio via CoreAudio. Intel Macs are not supported in v0.3.10.
 - **Linux** x86_64, arm64 — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+ (glibc 2.28+); full local audio via ALSA
 - **Windows** x86_64 — Windows 10 or newer; full local audio via WASAPI (native build). WSL2 is also supported as a remote-control-only fallback.
 
