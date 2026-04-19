@@ -19,7 +19,7 @@
 
 ## What is Xonora?
 
-**Xonora** is a high-performance, native client suite for [Music Assistant](https://music-assistant.io/) — the self-hosted music server that unifies Spotify, Apple Music, Plex, Jellyfin, local libraries, and more behind one API. Xonora ships native apps for **iOS, watchOS, and CarPlay**, and a **cross-platform C++ terminal CLI** for macOS, Linux, and Windows (via WSL). Android and tvOS clients are in development.
+**Xonora** is a high-performance, native client suite for [Music Assistant](https://music-assistant.io/) — the self-hosted music server that unifies Spotify, Apple Music, Plex, Jellyfin, local libraries, and more behind one API. Xonora ships native apps for **iOS, watchOS, and CarPlay**, and a **cross-platform C++ terminal CLI** with native binaries for macOS (Apple Silicon), Linux (x86_64 + arm64), and Windows (x86_64). Android and tvOS clients are in development.
 
 All clients share a custom audio engine (**SendspinKit** on Apple platforms, **xonora-core** in C++) that delivers gapless, synchronized, lossless playback with NTP-style clock sync against your MA server.
 
@@ -39,16 +39,16 @@ No Electron, no web view, no background daemon — just a ~5 MB binary.
 ## Supported Platforms          
 
 <!-- BEGIN:PLATFORMS -->
-- **macOS** arm64, x86_64 — macOS 12 (Monterey) or newer (universal binary, full local audio)
+- **macOS** arm64 (Apple Silicon) — macOS 12 (Monterey) or newer; full local audio via CoreAudio. Intel Macs are not shipped as a binary for v0.3.10 — build from source.
 - **Linux** x86_64, arm64 — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+ (glibc 2.28+); full local audio via ALSA
-- **Windows** x86_64 — Windows 10/11 via WSL2 (**remote control only** — no local audio playback; native Windows build planned for a future release)
+- **Windows** x86_64 — Windows 10 or newer; full local audio via WASAPI (native build). WSL2 is also supported as a remote-control-only fallback.
 <!-- END:PLATFORMS -->                                                                                                              
 
 ## Features
 
 - **9-tab TUI** — Dashboard, Players, Queue, Library, Search, Sendspin, Party, Console, Logs
 - **Native audio** — FLAC, PCM, Opus decoders feeding the OS audio stack (miniaudio: CoreAudio / ALSA / WASAPI) at the stream's native sample rate
-- **Cross-platform** — single codebase builds for macOS (universal), Linux (x86_64 + arm64), and Windows (via WSL2)
+- **Cross-platform** — single codebase builds for macOS (arm64), Linux (x86_64 + arm64), and Windows (x86_64, native)
 - **Gapless playback** with 5s pre-decode buffer and NTP-style clock sync
 - **Built-In Test (BIT) panel** — live health checks across CORE, NET, AUDIO, DATA subsystems
 - **Multi-player control** — drive any MA player (phone, web, Sonos, etc.) from your terminal
@@ -58,7 +58,7 @@ See the [Wiki](https://github.com/hayupadhyaya/xonora-cli/wiki) for full feature
 
 ## Requirements
 
-- **macOS 12 (Monterey) or later**, **Linux** (glibc 2.28+ — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+), or **Windows 10/11 via WSL2** (remote control only — see Known issues)
+- **macOS 12 (Monterey) or later** (Apple Silicon; Intel: build from source), **Linux** (glibc 2.28+ — Fedora, Ubuntu 22.04+, Debian 12+, Arch, RHEL 8+), or **Windows 10 or newer** (x86_64, native)
 - A reachable **Music Assistant** server (schema 28+) with the **Sendspin** provider enabled
 - Terminal with true-color support (Terminal.app, iTerm2, Alacritty, kitty, WezTerm, Windows Terminal all work)
 - Linux: ALSA runtime — `libasound2t64` (Ubuntu 24.04+), `libasound2` (Ubuntu 22.04 / Debian 12), `alsa-lib` (Fedora / Arch). Pre-installed on most desktop distros.
@@ -66,7 +66,9 @@ See the [Wiki](https://github.com/hayupadhyaya/xonora-cli/wiki) for full feature
 ## Installation           
                                                                                                                                       
 <!-- BEGIN:INSTALL -->
-### macOS
+### macOS (Apple Silicon)
+
+Homebrew:
 
 ```bash
 brew install hayupadhyaya/xonora/xonora-cli
@@ -76,9 +78,11 @@ Or download directly:
 
 ```bash
 curl -L -o xonora-cli.tar.gz \
-  https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.2.0/xonora-cli-v0.2.0-macos-universal.tar.gz
-tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.2.0-macos-universal/xonora-cli /usr/local/bin/
+  https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-macos-arm64.tar.gz
+tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.3.10-macos-arm64/xonora-cli /usr/local/bin/
 ```
+
+Intel Macs: not shipped as a binary for v0.3.10 — build from source.
 
 ### Linux
 
@@ -100,38 +104,44 @@ Then download the binary:
 ```bash
 ARCH=$(uname -m); [ "$ARCH" = "aarch64" ] && ARCH=arm64
 curl -L -o xonora-cli.tar.gz \
-  https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.2.0/xonora-cli-v0.2.0-linux-${ARCH}.tar.gz
-tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.2.0-linux-${ARCH}/xonora-cli /usr/local/bin/
+  https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-linux-${ARCH}.tar.gz
+tar -xzf xonora-cli.tar.gz && sudo mv xonora-cli-v0.3.10-linux-${ARCH}/xonora-cli /usr/local/bin/
 ```
 
-### Windows (via WSL2 — remote control only)
+### Windows
 
-Native Windows builds are not yet available. WSL2 can run `xonora-cli` as a **remote controller** for your Music Assistant server (browse library, control queue, drive other MA players like Sonos / phone / web), but **local audio playback is not supported** inside WSL2 — WSL2 does not expose an ALSA device to Linux binaries.
+Download [`xonora-cli-v0.3.10-windows-x86_64.zip`](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-windows-x86_64.zip), extract it, and run `xonora-cli.exe`. No dependencies required — audio plays through WASAPI via the OS.
 
-Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) with Ubuntu, then follow the **Linux x86_64** instructions above. Do **not** press `A` / pass `--audio`; use the TUI to control other MA players instead.
+```powershell
+# PowerShell
+Invoke-WebRequest -Uri "https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-windows-x86_64.zip" -OutFile xonora-cli.zip
+Expand-Archive xonora-cli.zip -DestinationPath .
+.\xonora-cli-v0.3.10-windows-x86_64\xonora-cli.exe --help
+```
 
-Local audio on Windows will be available once the native Windows build ships.
+WSL2 is also supported, but runs in **remote-control mode only** — WSL2 doesn't expose an audio device to Linux binaries. For local audio, use the native `.zip` above. For remote control only, install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) with Ubuntu and follow the Linux x86_64 instructions (do **not** press `A` / pass `--audio`).
 <!-- END:INSTALL -->  
 
 ## Downloads                           
                                        
 <!-- BEGIN:DOWNLOADS -->
-Latest release: **v0.2.0** — [release notes](https://github.com/hayupadhyaya/xonora-cli/releases/tag/cli-v0.2.0)
+Latest release: **v0.3.10** — [release notes](https://github.com/hayupadhyaya/xonora-cli/releases/tag/cli-v0.3.10)
 
 | Platform | Architecture | Download |
 |----------|--------------|----------|
-| macOS | universal (arm64 + x86_64) | [xonora-cli-v0.2.0-macos-universal.tar.gz](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.2.0/xonora-cli-v0.2.0-macos-universal.tar.gz) |
-| Linux | x86_64 | [xonora-cli-v0.2.0-linux-x86_64.tar.gz](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.2.0/xonora-cli-v0.2.0-linux-x86_64.tar.gz) |
-| Linux | arm64 | [xonora-cli-v0.2.0-linux-arm64.tar.gz](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.2.0/xonora-cli-v0.2.0-linux-arm64.tar.gz) |
-| Checksums | all | [SHA256SUMS](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.2.0/SHA256SUMS) |
-
-Windows users: run the Linux x86_64 binary inside WSL2 — see the Installation section.
+| macOS | arm64 (Apple Silicon) | [xonora-cli-v0.3.10-macos-arm64.tar.gz](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-macos-arm64.tar.gz) |
+| Linux | x86_64 | [xonora-cli-v0.3.10-linux-x86_64.tar.gz](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-linux-x86_64.tar.gz) |
+| Linux | arm64 | [xonora-cli-v0.3.10-linux-arm64.tar.gz](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-linux-arm64.tar.gz) |
+| Windows | x86_64 | [xonora-cli-v0.3.10-windows-x86_64.zip](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/xonora-cli-v0.3.10-windows-x86_64.zip) |
+| Checksums | all | [SHA256SUMS](https://github.com/hayupadhyaya/xonora-cli/releases/download/cli-v0.3.10/SHA256SUMS) |
 <!-- END:DOWNLOADS -->  
 
 ### Roadmap
 
-- **Native Windows build** — deferred. WSL2 works today for remote control; native build will add local audio playback (WASAPI). See roadmap on the Discord.
-- **Homebrew tap** — coming soon.
+- **Multi-player sync refinement** — clock-synced group playback is live, but cross-device drift can still be audible on peers with divergent system clocks. Tightening filter convergence is the next focus.
+- **WebRTC remote mode validation** — WebRTC (`--webrtc CODE`) ships in every release but has not been validated across real-world NAT / firewall topologies. Feedback from testers wanted.
+- **Party mode validation** — hosting and joining a shared listening session works in local testing but hasn't been broadly validated. Feedback from testers wanted.
+- **Homebrew tap** — published alongside this release.
 
 ## Quick start
 
@@ -164,12 +174,13 @@ Inside the TUI:
 
 Full keybinding reference: [Wiki → Keybindings](https://github.com/hayupadhyaya/xonora-cli/wiki/Keybindings).
 
-## Known issues (v0.2)
+## Known issues (v0.3.10)
 
-- **PCM & Opus silent** — only FLAC currently produces audio. PCM fallback (bit_depth=0→16) landed; Opus decoder configure may fail on some servers. Use FLAC output format in MA until fixed.
-- **Remote (WebRTC) mode disabled** — not shipped in v0.2 binaries. LAN-only access for now.
-- **Dashboard queue/playback panel** — some MA event types update the Logs tab but do not refresh the Dashboard summary until a full event cycle passes.
-- **WSL2 has no local audio** — WSL2 does not expose an ALSA device to Linux binaries, so on Windows `xonora-cli` runs as a **remote controller only**: browse library, control the queue, drive Sonos / phone / web / any other MA player. Local audio playback inside WSL2 is not fixable — it requires the **native Windows build** (WASAPI), which is planned for a future release.
+- **Multi-player cross-device sync can drift** — group playback is clock-synced, but peers on different devices may still be audibly a few milliseconds off after extended play. Refinements are tracked for a follow-up release.
+- **WebRTC remote mode is experimental** — `--webrtc CODE` ships in every binary and works in local testing, but has not been validated across real-world NAT / firewall topologies. Please file an issue with your network setup if it misbehaves.
+- **Party mode is experimental** — hosting and joining a shared listening session works in local testing but is not yet broadly validated. Feedback from multi-device testers is welcome.
+- **Dashboard refresh lag on some MA events** — a handful of MA event types update the Logs tab but may take a full event cycle to refresh the Dashboard summary panel.
+- **WSL2 has no local audio** — WSL2 doesn't expose an audio device to Linux binaries, so the Linux build inside WSL2 runs as a **remote controller only**. Use the native Windows `.zip` (WASAPI) for local audio on Windows.
 
 See [Wiki → Troubleshooting](https://github.com/hayupadhyaya/xonora-cli/wiki/Troubleshooting) for workarounds.
 
