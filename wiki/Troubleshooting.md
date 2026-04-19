@@ -22,26 +22,27 @@ grep -E "AudioPipeline|AUD|pump:" /tmp/xonora.log
 
 The in-TUI **Logs tab** (press `9`) shows the high-level event log. `/tmp/xonora.log` shows the raw engine output (decoder state, pipeline drains, ring-buffer fills).
 
-## Known issues (v0.1)
+## Known issues (v0.3.10)
 
-### PCM and Opus streams are silent
+### Remote (WebRTC) mode is experimental
 
-Only **FLAC** produces audio in v0.1. Workaround: in the MA UI, set the stream output format to FLAC for the target player.
+`--webrtc CODE` ships on every platform in v0.3.10 and works in local testing, but has not been validated across the full range of real-world NAT / firewall topologies. If it misbehaves on your setup, please file an issue with your network details and Logs tab output.
 
-- PCM with `bit_depth=0` in the stream header now falls back to 16-bit, but some servers still emit empty decode buffers.
-- Opus decoder `configure()` may fail on some stream/start headers; the Logs tab will show `decoder->configure() FAILED` when this happens.
+### Party mode is experimental
 
-### Remote (WebRTC) mode unverified
+Hosting and joining shared listening sessions works in local testing, but is not yet broadly validated across multiple devices. Feedback from multi-device testers is welcome on Discord.
 
-Signalling and DTLS connect, but real-world NAT-traversed playback hasn't been confirmed end-to-end. If it works for you, please report to Discord so we can close this out.
+### Multi-player cross-device sync can drift
 
-### Intel (x86_64) build has no Remote mode
+Group playback is clock-synced, but peers on different devices may still be audibly a few milliseconds off after extended play. Refinements are tracked for a follow-up release.
 
-The v0.1 x86_64 binary was cross-compiled from Apple Silicon without the WebRTC stack. Use the arm64 build for remote mode, or wait for v0.2.
-
-### Dashboard queue/playback panel lags
+### Dashboard refresh lag on some MA events
 
 Some MA event types land in the Logs tab but do not immediately refresh the Dashboard summary. A new track or playback event typically refreshes it within a cycle.
+
+### WSL2 has no local audio
+
+WSL2 doesn't expose an audio device to Linux binaries, so the Linux build inside WSL2 runs as a **remote controller only**. Use the native Windows `.zip` (WASAPI) for local audio on Windows.
 
 ## Common fixes
 
@@ -55,7 +56,7 @@ Or approve in **System Settings → Privacy & Security → Open Anyway**.
 
 ### Connecting to a server for the first time
 
-Pass the server URL and credentials explicitly. These are saved to `~/.xonora-cli/config.json` after a successful connection:
+Pass the server URL and credentials explicitly. These are saved to the OS-standard config path (`~/Library/Application Support/xonora/config.json` on macOS, `~/.config/xonora/config.json` on Linux, `%APPDATA%\xonora\config.json` on Windows) after a successful connection:
 
 ```sh
 xonora-cli --server ws://<MA-IP>:8095 --user <username> --pass <password>
@@ -71,7 +72,7 @@ Verify the **Sendspin** player provider is installed and enabled on your MA serv
 
 ### Audio starts mid-track or ends early
 
-Fixed in v0.1 via pipeline-side rate limiting. If you still see it, capture logs (`2>/tmp/xonora.log`) and share the `AudioPipeline OUT` lines on Discord.
+Fixed in v0.3.x via pipeline-side rate limiting and unified clock-domain scheduling. If you still see it, capture logs (`2>/tmp/xonora.log`) and share the `AudioPipeline OUT` lines on Discord.
 
 ### Terminal renders garbled / no color
 
@@ -84,7 +85,7 @@ Ensure `TERM=xterm-256color` or `TERM=screen-256color`. tmux users may need `tmu
 
 When reporting an issue, please include:
 
-1. macOS version and architecture (`uname -m`)
-2. `xonora-cli --help` output (confirms binary version)
-3. `/tmp/xonora.log` output covering the issue
+1. OS and architecture (macOS arm64, Linux x86_64 / arm64, Windows x86_64)
+2. `xonora-cli --version` output (confirms binary version and whether `+webrtc` is compiled in)
+3. `/tmp/xonora.log` output covering the issue (or `%TEMP%\xonora.log` on Windows)
 4. Relevant lines from the in-TUI Logs tab (`9`)

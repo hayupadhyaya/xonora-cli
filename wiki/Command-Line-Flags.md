@@ -40,9 +40,17 @@ xonora-cli --webrtc XXXXXXXX-XXXXX-XXXXX-XXXXXXXX
 | Flag | Description |
 |------|-------------|
 | `--name NAME` | Player display name shown in MA (default: `Xonora CLI`) |
-| `--audio` | Enable audio output on launch (default: off; press `A` to toggle at runtime) |
+| `--audio` | Enable local audio output on launch (default: off) |
+| `--force-codec {flac,opus,pcm}` | Override MA's codec negotiation for this session |
+| `--version`, `-v` | Print binary version (and `+webrtc` tag if remote transport is compiled in) and exit |
 | `--help`, `-h` | Show help and exit |
 
 ## Configuration persistence
 
-Connection settings are saved to `~/.xonora-cli/config.json` on first successful connection. Running `xonora-cli` with no arguments reuses the saved direct-mode server. To switch to remote mode, pass `--webrtc` with a new Remote ID (or `--webrtc` alone to reuse the saved ID).
+Connection settings are saved on first successful connection:
+
+- **macOS:** `~/Library/Application Support/xonora/config.json`
+- **Linux:** `$XDG_CONFIG_HOME/xonora/config.json` (or `~/.config/xonora/config.json`)
+- **Windows:** `%APPDATA%\xonora\config.json`
+
+Running `xonora-cli` with no arguments reuses the saved direct-mode server. To switch to remote mode, pass `--webrtc` with a new Remote ID (or `--webrtc` alone to reuse the saved ID).

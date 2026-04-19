@@ -6,7 +6,10 @@ Welcome to the `xonora-cli` documentation.
 
 ## Pages
 
-- **[Getting Started](Getting-Started)** — installing, first run, auto-discovery
+- **[Install](Install)** — platform-specific installation steps
+- **[Downloads](Downloads)** — latest binaries and release history
+- **[Supported Platforms](Supported-Platforms)** — OS/arch matrix and requirements
+- **[Getting Started](Getting-Started)** — first run, configuration, what to try
 - **[Command-Line Flags](Command-Line-Flags)** — every flag accepted by the binary
 - **[Tabs Overview](Tabs-Overview)** — what each of the 9 tabs does
 - **[Keybindings](Keybindings)** — full keyboard reference
@@ -16,7 +19,7 @@ Welcome to the `xonora-cli` documentation.
 ## Quick reference
 
 ```sh
-# First run — pass server + credentials (saved to ~/.xonora-cli/config.json)
+# First run — pass server + credentials (saved for subsequent runs)
 xonora-cli --server ws://192.168.1.50:8095 --user USERNAME --pass PASSWORD
 
 # Subsequent runs — reuse saved config

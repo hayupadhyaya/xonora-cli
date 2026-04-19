@@ -2,9 +2,9 @@
 
 Remote mode lets `xonora-cli` connect to your Music Assistant server from outside your LAN, without VPN, port forwarding, or a public IP — using WebRTC peer-to-peer with NAT traversal via ICE.
 
-**Status in v0.1: beta, unverified.** The transport compiles and connects, but end-to-end playback in real-world NAT conditions has not been fully field-tested. Please report results on the Discord or GitHub Issues.
+**Status in v0.3.10: experimental, needs testers.** The transport compiles and connects, and audio has been verified in local NAT setups, but end-to-end playback across real-world NAT / firewall topologies has not been broadly validated. Please report results on the Discord or GitHub Issues.
 
-**Availability:** Apple Silicon (arm64) build only in v0.1. The Intel (x86_64) build is compiled without WebRTC support.
+**Availability:** all platforms in v0.3.10 ship WebRTC — macOS arm64, Linux x86_64/arm64, and Windows x86_64 binaries all include the remote transport. Run `xonora-cli --version` and look for the `+webrtc` tag to confirm.
 
 ## How it works
 
@@ -41,4 +41,4 @@ Dashes in the Remote ID are optional — the CLI strips them before parsing.
 
 - **"No Remote ID" error** — run with `--webrtc CODE` once; subsequent runs can use `--webrtc` alone.
 - **Connection never opens** — check the Logs tab for signalling errors. The signalling server must be reachable; test with `wscat -c wss://signaling.music-assistant.io/ws`.
-- **Connects but no audio** — known v0.1 limitation. Report to Discord or open an issue with Logs tab output.
+- **Connects but no audio** — most commonly a codec negotiation issue across the relay. Try `--force-codec flac`, and share the Logs tab output on Discord or in a GitHub issue if it persists.
