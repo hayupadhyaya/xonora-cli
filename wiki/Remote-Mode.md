@@ -13,7 +13,11 @@ Remote mode lets `xonora-cli` connect to your Music Assistant server from outsid
 3. A direct WebRTC `PeerConnection` is established, and two ordered/reliable DataChannels open:
    - `ma-api` — relays the Music Assistant JSON-RPC WebSocket traffic
    - `sendspin` — relays the Sendspin binary audio protocol (framing preserved)
-4. DTLS pins the Remote ID fingerprint, so no man-in-the-middle attack can impersonate your server. No separate credentials are needed.
+4. DTLS pins the Remote ID fingerprint, so no man-in-the-middle attack can impersonate your server. This authenticates the **transport**, not your Music Assistant session.
+
+The Remote ID secures the tunnel. Your MA server still enforces its own auth: if your server has a username/password configured, you'll be prompted to sign in after the tunnel comes up, exactly like a direct connection.
+
+**v0.3.10 limitation:** the CLI currently rejects `--webrtc` combined with `--user` / `--pass` / `--token`. If your MA server requires auth, you'll see an "Authentication required" error on the Dashboard after the WebRTC transport connects. This is tracked for v0.3.11. Workarounds today: use a passwordless MA setup for WebRTC testing, or fall back to direct mode with `--user` / `--pass` over LAN / reverse proxy.
 
 ## Using it
 

@@ -33,7 +33,7 @@ Example:
 xonora-cli --webrtc XXXXXXXX-XXXXX-XXXXX-XXXXXXXX
 ```
 
-`--webrtc` is mutually exclusive with the direct-mode flags. Remote mode authenticates via DTLS certificate pinning derived from the Remote ID, so no separate credentials are required. See [Remote Mode](Remote-Mode) for setup details.
+`--webrtc` is mutually exclusive with the direct-mode flags in v0.3.10. The Remote ID authenticates the transport via DTLS certificate pinning — it secures the tunnel against man-in-the-middle, but it does **not** authenticate your Music Assistant session. If your MA server requires a username/password, the CLI will currently surface an "Authentication required" error after the tunnel comes up (tracked for v0.3.11 — combining `--webrtc` with `--user` / `--pass` will be allowed). See [Remote Mode](Remote-Mode) for setup details.
 
 ## Common options
 
